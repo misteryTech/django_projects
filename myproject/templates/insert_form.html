@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Record{% endblock %}
+
+{% block content %}
+
+
+    <h2>Add New Record</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Age:</label><br>
+        <input type="number" name="age" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2>All Records</h2>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.id }}</td>
+            <td>{{ record.name }}</td>
+            <td>{{ record.email }}</td>
+            <td>{{ record.age }}</td>
+
+
+                    <td>
+                        <a href="{% url 'edit_data' record.id %}">
+                            <button class="btn btn-primary"  type="button">Edit</button>
+                        </a>
+                        <form method="POST" action="{% url 'delete_data' record.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn btn-danger" type="submit" onclick="return confirm('Delete this record?');">Delete</button>
+                        </form>
+                    </td>
+
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No records found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button  type="button" class="btn btn-primary" onclick="myFunction()">Try it</button>
+
+   {% endblock %}
